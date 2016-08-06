@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * @author shadowfacts
  */
-public class ForglinPlugin implements IFMLLoadingPlugin {
+public class ForgelinPlugin implements IFMLLoadingPlugin {
 
 	@Override
 	public String[] getASMTransformerClass() {
