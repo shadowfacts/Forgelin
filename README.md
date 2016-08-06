@@ -17,4 +17,6 @@ dependencies {
 }
 ```
 
+All versions can be seen [here](http://mvn.rx14.co.uk/shadowfacts/net/shadowfacts/Forgelin/).
+
 You _can_ shade Forgelin but it's not recommended, as it means users may be unintentionally downloading the entire Kotlin standard library, reflect library, and runtime multiple times.
