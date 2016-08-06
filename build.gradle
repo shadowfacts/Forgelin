@@ -72,7 +72,7 @@ dependencies {
 
 jar {
 	manifest {
-		attributes "FMLCorePlugin": "net.shadowfacts.forgelin.ForgelinCorePlugin"
+		attributes "FMLCorePlugin": "net.shadowfacts.forgelin.ForgelinPlugin"
 		attributes "FMLCorePluginContainsFMLMod": "true"
 	}
 }
@@ -85,7 +85,7 @@ shadowJar {
 		include(dependency("org.jetbrains.kotlin:kotlin-runtime:${kotlin_version}"))
 	}
 	manifest {
-		attributes "FMLCorePlugin": "net.shadowfacts.forgelin.ForgelinCorePlugin"
+		attributes "FMLCorePlugin": "net.shadowfacts.forgelin.ForgelinPlugin"
 	}
 }
 
