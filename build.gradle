@@ -19,7 +19,7 @@ plugins {
 apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "kotlin"
 
-version = mc_version + "-" + mod_version
+version = mod_version
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
