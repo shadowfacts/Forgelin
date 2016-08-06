@@ -1,0 +1,97 @@
+buildscript {
+	repositories {
+		jcenter()
+		maven {
+			name "forge"
+			url "http://files.minecraftforge.net/maven/"
+		}
+	}
+	dependencies {
+		classpath "net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT"
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
+	}
+}
+
+plugins {
+	id "com.github.johnrengelman.shadow" version "1.2.3"
+}
+
+apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "kotlin"
+
+version = mc_version + "-" + mod_version
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+minecraft {
+	version = mc_version + "-" + forge_version
+	runDir = "run"
+
+	mappings = mcp_mappings
+
+	replaceIn "Reference.kt"
+	replaceIn "Reference.kt"
+	replace "@VERSION@", mod_version
+
+	useDepAts = true
+}
+
+processResources {
+	inputs.property "version", project.version
+	inputs.property "mcversion", project.minecraft.version
+
+	from (sourceSets.main.resources.srcDirs) {
+		include "mcmod.info"
+		expand "version": project.version, "mcversion": mc_version
+	}
+	from (sourceSets.main.resources.srcDirs) {
+		exclude "mcmod.info"
+	}
+}
+
+repositories {
+	maven {
+		name "shadowfacts"
+		url "http://mvn.rx14.co.uk/shadowfacts/"
+	}
+	maven {
+		url "http://dvs1.progwml6.com/files/maven"
+	}
+	maven {
+		url "http://maven.epoxide.xyz"
+	}
+}
+
+dependencies {
+	compile group: "org.jetbrains.kotlin", name: "kotlin-stdlib", version: kotlin_version
+	compile group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
+	compile group: "org.jetbrains.kotlin", name: "kotlin-runtime", version: kotlin_version
+
+	deobfCompile group: "net.shadowfacts", name: "ShadowMC", version: mc_version + "-" + shadowmc_version
+}
+
+jar {
+	manifest {
+		attributes "FMLCorePlugin": "net.shadowfacts.forgelin.ForgelinCorePlugin"
+		attributes "FMLCorePluginContainsFMLMod": "true"
+	}
+}
+
+shadowJar {
+	classifier = ""
+	dependencies {
+		include(dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"))
+		include(dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"))
+		include(dependency("org.jetbrains.kotlin:kotlin-runtime:${kotlin_version}"))
+	}
+	manifest {
+		attributes "FMLCorePlugin": "net.shadowfacts.forgelin.ForgelinCorePlugin"
+	}
+}
+
+tasks.build.dependsOn shadowJar
+
+artifacts {
+	archives shadowJar
+}
