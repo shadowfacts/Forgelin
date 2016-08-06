@@ -67,8 +67,6 @@ dependencies {
 	compile group: "org.jetbrains.kotlin", name: "kotlin-stdlib", version: kotlin_version
 	compile group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
 	compile group: "org.jetbrains.kotlin", name: "kotlin-runtime", version: kotlin_version
-
-	deobfCompile group: "net.shadowfacts", name: "ShadowMC", version: mc_version + "-" + shadowmc_version
 }
 
 jar {
