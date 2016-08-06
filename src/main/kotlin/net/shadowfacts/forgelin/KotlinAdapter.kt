@@ -30,11 +30,11 @@ public class KotlinAdapter : ILanguageAdapter {
 
 	override fun setProxy(target: Field, proxyTarget: Class<*>, proxy: Any) {
 		log.debug("Setting proxy: {}.{} -> {}", target.getDeclaringClass().getSimpleName(), target.getName(), proxy)
-		if (proxyTarget.getFields().any { x -> x.getName().equals("INSTANCE$") }) {
+		if (proxyTarget.getFields().any { x -> x.getName().equals("INSTANCE") }) {
 			// Singleton
 			try {
-				log.debug("Setting proxy on INSTANCE$; singleton target.")
-				val obj = proxyTarget.getField("INSTANCE$").get(null)
+				log.debug("Setting proxy on INSTANCE; singleton target.")
+				val obj = proxyTarget.getField("INSTANCE").get(null)
 				target.set(obj, proxy)
 			} catch (ex: Exception) {
 				throw KotlinAdapterException(ex)
@@ -49,10 +49,10 @@ public class KotlinAdapter : ILanguageAdapter {
 		log.debug("FML has asked for {} to be constructed...", objectClass.getSimpleName())
 		try {
 			// Try looking for an object type
-			val f = objectClass.getField("INSTANCE$")
+			val f = objectClass.getField("INSTANCE")
 			val obj = f.get(null)
 			if (obj == null) throw NullPointerException()
-			log.debug("Found an object INSTANCE$ reference in {}, using that. ({})", objectClass.getSimpleName(), obj)
+			log.debug("Found an object INSTANCE reference in {}, using that. ({})", objectClass.getSimpleName(), obj)
 			return obj
 		} catch (ex: Exception) {
 			// Try looking for a class type
