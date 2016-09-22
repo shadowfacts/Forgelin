@@ -94,3 +94,11 @@ tasks.build.dependsOn shadowJar
 artifacts {
 	archives shadowJar
 }
+
+reobf {
+	shadowJar {
+		mappingType = "SEARGE"
+	}
+}
+tasks.reobfShadowJar.mustRunAfter shadowJar
+tasks.build.dependsOn reobfShadowJar
