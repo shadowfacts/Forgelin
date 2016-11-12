@@ -1,4 +1,6 @@
 # Forgelin
+**WARNING:** This project is no longer maintained. It has been superseded by Kotlin integration in [ShadowMC](https://github.com/shadowfacts/ShadowMC).
+
 Fork of [Emberwalker's Forgelin](https://github.com/Emberwalker/Forgelin) with some sprinkles on top.
 
 ## Additions
