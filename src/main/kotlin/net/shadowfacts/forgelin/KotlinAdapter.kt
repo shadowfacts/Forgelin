@@ -9,64 +9,59 @@ import java.lang.reflect.Field
 import java.lang.reflect.Method
 
 /**
- * Kotlin implementation of FML's ILanguageAdapter.
- *
- * Use by setting <pre>modLanguageAdapter = "io.drakon.forgelinFR.KotlinAdapter"</pre> in the Mod annotation
- * (Forge 1.8-11.14.1.1371 or above required).
- *
- * @author Arkan <arkan@drakon.io>
+ * Forge {@link ILanguageAdapter} for Kotlin
+ * Usage: Set the {@code modLanguageAdapter} field in your {@code @Mod} annotation to {@code net.shadowfacts.forgelin.KotlinAdapter}
+ * @author shadowfacts
  */
 class KotlinAdapter : ILanguageAdapter {
 
-	private val log = LogManager.getLogger("ILanguageAdapter/Kotlin")
+	private val log = LogManager.getLogger("KotlinAdapter")
 
 	override fun supportsStatics(): Boolean {
 		return false
 	}
 
 	override fun setProxy(target: Field, proxyTarget: Class<*>, proxy: Any) {
-		log.debug("Setting proxy: {}.{} -> {}", target.declaringClass.simpleName, target.name, proxy)
-		if (proxyTarget.fields.any { x -> x.name.equals("INSTANCE") }) {
+		log.debug("Setting proxy: ${target.declaringClass.simpleName}.${target.name} -> $proxy")
+		if (proxyTarget.fields.any { x -> x.name == "INSTANCE" }) {
 			// Singleton
 			try {
-				log.debug("Setting proxy on INSTANCE; singleton target.")
+				log.debug("Setting proxy on INSTANCE; singleton target")
 				val obj = proxyTarget.getField("INSTANCE").get(null)
 				target.set(obj, proxy)
-			} catch (ex: Exception) {
-				throw KotlinAdapterException(ex)
+			} catch (e: Exception) {
+				throw KotlinAdapterException(e)
 			}
 		} else {
-			//TODO Log?
 			target.set(proxyTarget, proxy)
 		}
 	}
 
-	override fun getNewInstance(container: FMLModContainer?, objectClass: Class<*>, classLoader: ClassLoader, factoryMarkedAnnotation: Method?): Any? {
-		log.debug("FML has asked for {} to be constructed...", objectClass.simpleName)
+	override fun getNewInstance(container: FMLModContainer, objectClass: Class<*>, classLoader: ClassLoader, factoryMarkedAnnotation: Method?): Any {
+		log.debug("FML has asked for ${objectClass.simpleName} to be constructed")
 		try {
 			// Try looking for an object type
 			val f = objectClass.getField("INSTANCE")
 			val obj = f.get(null) ?: throw NullPointerException()
-			log.debug("Found an object INSTANCE reference in {}, using that. ({})", objectClass.simpleName, obj)
+			log.debug("Found an object INSTANCE reference in ${objectClass.simpleName}, using that. ${obj}")
 			return obj
-		} catch (ex: Exception) {
+		} catch (e: Exception) {
 			// Try looking for a class type
-			log.debug("Failed to get object reference, trying class construction.")
+			log.debug("Failed to get object reference, trying class construction")
 			try {
 				val obj = objectClass.newInstance() ?: throw NullPointerException()
-				log.debug("Constructed an object from a class type ({}), using that. ({})", objectClass, obj)
-				log.warn("Hey, you, modder who owns {} - you should be using 'object' instead of 'class' on your @Mod class.", objectClass.simpleName)
+				log.debug("Constructed an object from a class type ($objectClass), using that. $obj")
 				return obj
-			} catch (ex: Exception) {
-				throw KotlinAdapterException(ex)
+			} catch (e: Exception) {
+				throw KotlinAdapterException(e)
 			}
 		}
 	}
 
 	override fun setInternalProxies(mod: ModContainer?, side: Side?, loader: ClassLoader?) {
-		// Nothing to do; FML's got this covered for Kotlin.
+		// Nothing to do; FML's got this covered for Kotlin
 	}
 
-	private class KotlinAdapterException(ex: Exception) : RuntimeException("Kotlin adapter error - do not report to Forge!", ex)
+	private class KotlinAdapterException(e: Exception) : RuntimeException("Kotlin adapter error - do not report to Forge!", e)
 
 }

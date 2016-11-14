@@ -1,10 +1,9 @@
 # Forgelin
-**WARNING:** This project is no longer maintained. It has been superseded by Kotlin integration in [ShadowMC](https://github.com/shadowfacts/ShadowMC).
-
-Fork of [Emberwalker's Forgelin](https://github.com/Emberwalker/Forgelin) with some sprinkles on top.
+Fork of [Emberwalker's Forgelin](https://github.com/Emberwalker/Forgelin).
 
 ## Additions
-- Extensions for Minecraft/Forge code. See them in the [extensions package](https://github.com/shadowfacts/Forgelin/tree/master/src/main/kotlin/net/shadowfacts/forgelin/extensions/).
+- Shades the Kotlin standard library, runtime, and reflect libraries so you don't have to.
+- Provides a Forge `ILanguageAdapter` for using Kotlin `object` classes as your main mod class.
 
 ## Usage
 ```groovy
