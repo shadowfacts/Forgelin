@@ -9,7 +9,7 @@ Fork of [Emberwalker's Forgelin](https://github.com/Emberwalker/Forgelin).
 ```groovy
 repositories {
 	maven {
-		url "http://mvn.rx14.co.uk/shadowfacts/
+		url "http://mvn.rx14.co.uk/shadowfacts/"
 	}
 }
 
