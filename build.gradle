@@ -70,22 +70,12 @@ dependencies {
 	compile group: "org.jetbrains.kotlin", name: "kotlin-runtime", version: kotlin_version
 }
 
-jar {
-	manifest {
-		attributes "FMLCorePlugin": "net.shadowfacts.forgelin.ForgelinPlugin"
-		attributes "FMLCorePluginContainsFMLMod": "true"
-	}
-}
-
 shadowJar {
 	classifier = ""
 	dependencies {
 		include(dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"))
 		include(dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"))
 		include(dependency("org.jetbrains.kotlin:kotlin-runtime:${kotlin_version}"))
-	}
-	manifest {
-		attributes "FMLCorePlugin": "net.shadowfacts.forgelin.ForgelinPlugin"
 	}
 }
 
