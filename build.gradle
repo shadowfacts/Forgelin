@@ -52,6 +52,7 @@ processResources {
 }
 
 repositories {
+	jcenter()
 	maven {
 		name "shadowfacts"
 		url "http://mvn.rx14.co.uk/shadowfacts/"
@@ -68,6 +69,9 @@ dependencies {
 	compile group: "org.jetbrains.kotlin", name: "kotlin-stdlib", version: kotlin_version
 	compile group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
 	compile group: "org.jetbrains.kotlin", name: "kotlin-runtime", version: kotlin_version
+	compile group: "org.jetbrains", name: "annotations", version: annotations_version
+	compile group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
+	compile group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
 }
 
 jar {
@@ -83,6 +87,9 @@ shadowJar {
 		include(dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"))
 		include(dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"))
 		include(dependency("org.jetbrains.kotlin:kotlin-runtime:${kotlin_version}"))
+		include(dependency("org.jetbrains:annotations:${annotations_version}"))
+		include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}"))
+		include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}"))
 	}
 	manifest {
 		attributes "FMLCorePlugin": "net.shadowfacts.forgelin.preloader.ForgelinPlugin",
