@@ -8,6 +8,7 @@ Fork of [Emberwalker's Forgelin](https://github.com/Emberwalker/Forgelin).
 ## Usage
 ```groovy
 repositories {
+	jcenter()
 	maven {
 		url "http://mvn.rx14.co.uk/shadowfacts/"
 	}
@@ -19,3 +20,5 @@ dependencies {
 ```
 
 All versions can be seen [here](http://mvn.rx14.co.uk/shadowfacts/net/shadowfacts/Forgelin/).
+
+**Note:** You must have the `jcenter()` call in your `repositories` block. JCenter is used to host the Kotlin coroutines libraries.
