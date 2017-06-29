@@ -7,7 +7,7 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath "net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT"
+		classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
 	}
 }
@@ -53,16 +53,6 @@ processResources {
 
 repositories {
 	jcenter()
-	maven {
-		name "shadowfacts"
-		url "http://mvn.rx14.co.uk/shadowfacts/"
-	}
-	maven {
-		url "http://dvs1.progwml6.com/files/maven"
-	}
-	maven {
-		url "http://maven.epoxide.xyz"
-	}
 }
 
 dependencies {
@@ -111,3 +101,11 @@ reobf {
 }
 tasks.reobfShadowJar.mustRunAfter shadowJar
 tasks.build.dependsOn reobfShadowJar
+
+uploadArchives {
+	repositories.mavenDeployer {
+		repository(url: "http://archiva.shadowfacts.net/repository/local/") {
+			authentication(userName: project.hasProperty("mavenUser") ? project.mavenUser : System.getenv("mavenUser"), password: project.hasProperty("mavenPassword") ? project.mavenPassword : System.getenv("mavenPassword"))
+		}
+	}
+}
