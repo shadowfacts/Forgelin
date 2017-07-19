@@ -10,6 +10,6 @@ object Forgelin {
 
 	const val MOD_ID = "forgelin"
 	const val NAME = "Forgelin"
-	const val VERSION = "1.4.2"
+	const val VERSION = "@VERSION@"
 
 }
