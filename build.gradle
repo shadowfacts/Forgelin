@@ -89,25 +89,6 @@ shadowJar {
 
 tasks.build.dependsOn shadowJar
 
-import net.minecraftforge.gradle.user.TaskSourceCopy
-
-// Enables source replacements for Kotlin code
-for (set in sourceSets) {
-	def taskName = "source${set.name.capitalize()}Kotlin"
-	def dir = new File(project.getBuildDir(), "sources/${set.name}/kotlin")
-	task(taskName, type: TaskSourceCopy) {
-		source = set.getKotlin()
-		output = dir
-	}
-	def compileTask = tasks[set.getCompileTaskName("kotlin")]
-	compileTask.source = dir
-	compileTask.dependsOn taskName
-	def dirPath = dir.toPath()
-	compileKotlin.include {
-		return it.file.toPath().startsWith(dirPath)
-	}
-}
-
 artifacts {
 	archives shadowJar
 }
