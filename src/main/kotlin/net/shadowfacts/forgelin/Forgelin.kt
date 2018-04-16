@@ -17,7 +17,7 @@ object Forgelin {
 	const val VERSION = "@VERSION@"
 
 	@EventHandler
-	fun onPreInit(event: FMLConstructionEvent) {
+	fun onConstruction(event: FMLConstructionEvent) {
 		Loader.instance().modList.forEach {
 			ForgelinAutomaticEventSubscriber.subscribeAutomatic(it, event.asmHarvestedData, FMLCommonHandler.instance().side)
 		}
