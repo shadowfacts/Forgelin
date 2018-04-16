@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.discovery.asm.ModAnnotation.EnumHolder
 import net.minecraftforge.fml.relauncher.Side
 import org.apache.logging.log4j.LogManager
 import java.util.EnumSet
+import kotlin.reflect.full.companionObjectInstance
 
 object ForgelinAutomaticEventSubscriber {
     private val DEFAULT_SUBSCRIPTION_SIDES = EnumSet.allOf(Side::class.java)
@@ -40,10 +41,13 @@ object ForgelinAutomaticEventSubscriber {
 
                 LOGGER.debug("Registering @EventBusSubscriber object for {} for mod {}", subscriber.className, mod.modId)
 
-                val subscriberInstance = Class.forName(subscriber.className, false, loader)?.kotlin?.objectInstance
-                if (subscriberInstance != null) {
-                    MinecraftForge.EVENT_BUS.register(subscriberInstance)
-                    LOGGER.debug("Registered @EventBusSubscriber object {}", subscriber.className)
+                val subscriberClass = Class.forName(subscriber.className, false, loader)?.kotlin
+                if (subscriberClass != null) {
+                    val subscriberInstance = subscriberClass.objectInstance ?: subscriberClass.companionObjectInstance
+                    if (subscriberInstance != null) {
+                        MinecraftForge.EVENT_BUS.register(subscriberInstance)
+                        LOGGER.debug("Registered @EventBusSubscriber object {}", subscriber.className)
+                    }
                 }
             } catch (e: Throwable) {
                 LOGGER.error("An error occurred trying to load an @EventBusSubscriber object {} for modid {}", mod.modId, e)

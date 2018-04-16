@@ -4,7 +4,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
+import net.minecraftforge.fml.common.event.FMLConstructionEvent
 
 /**
  * @author shadowfacts
@@ -17,9 +17,9 @@ object Forgelin {
 	const val VERSION = "@VERSION@"
 
 	@EventHandler
-	fun onPreInit(event: FMLPreInitializationEvent) {
+	fun onPreInit(event: FMLConstructionEvent) {
 		Loader.instance().modList.forEach {
-			ForgelinAutomaticEventSubscriber.subscribeAutomatic(it, event.asmData, FMLCommonHandler.instance().side)
+			ForgelinAutomaticEventSubscriber.subscribeAutomatic(it, event.asmHarvestedData, FMLCommonHandler.instance().side)
 		}
 	}
 }
