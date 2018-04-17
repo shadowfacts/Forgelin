@@ -24,9 +24,11 @@ object ForgelinAutomaticEventSubscriber {
 
         val containedMods = modAnnotations.get(Mod::class.java.name)
         val subscribers = modAnnotations.get(Mod.EventBusSubscriber::class.java.name)
+                .filter { parseTargetSides(it).contains(currentSide) }
+
         val loader = Loader.instance().modClassLoader
 
-        for (subscriber in subscribers.filter { parseTargetSides(it).contains(currentSide) }) {
+        for (subscriber in subscribers) {
             try {
                 val ownerModId = parseModId(containedMods, subscriber)
                 if (ownerModId.isNullOrEmpty()) {
@@ -41,14 +43,11 @@ object ForgelinAutomaticEventSubscriber {
 
                 LOGGER.debug("Registering @EventBusSubscriber object for {} for mod {}", subscriber.className, mod.modId)
 
-                val subscriberClass = Class.forName(subscriber.className, false, loader)?.kotlin
-                if (subscriberClass != null) {
-                    val subscriberInstance = subscriberClass.objectInstance ?: subscriberClass.companionObjectInstance
-                    if (subscriberInstance != null) {
-                        MinecraftForge.EVENT_BUS.register(subscriberInstance)
-                        LOGGER.debug("Registered @EventBusSubscriber object {}", subscriber.className)
-                    }
-                }
+                val subscriberClass = Class.forName(subscriber.className, false, loader)?.kotlin ?: continue
+                val subscriberInstance = subscriberClass.objectInstance ?: subscriberClass.companionObjectInstance ?: continue
+
+                MinecraftForge.EVENT_BUS.register(subscriberInstance)
+                LOGGER.debug("Registered @EventBusSubscriber object {}", subscriber.className)
             } catch (e: Throwable) {
                 LOGGER.error("An error occurred trying to load an @EventBusSubscriber object {} for modid {}", mod.modId, e)
                 throw LoaderException(e)
