@@ -1,6 +1,10 @@
 package net.shadowfacts.forgelin
 
+import net.minecraftforge.fml.common.FMLCommonHandler
+import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.fml.common.Mod
+import net.minecraftforge.fml.common.Mod.EventHandler
+import net.minecraftforge.fml.common.event.FMLConstructionEvent
 
 /**
  * @author shadowfacts
@@ -12,4 +16,10 @@ object Forgelin {
 	const val NAME = "Forgelin"
 	const val VERSION = "@VERSION@"
 
+	@EventHandler
+	fun onConstruction(event: FMLConstructionEvent) {
+		Loader.instance().modList.forEach {
+			ForgelinAutomaticEventSubscriber.subscribeAutomatic(it, event.asmHarvestedData, FMLCommonHandler.instance().side)
+		}
+	}
 }
