@@ -46,6 +46,7 @@ object ForgelinAutomaticEventSubscriber {
                 val subscriberClass = Class.forName(subscriber.className, false, loader)?.kotlin ?: continue
                 val subscriberInstance = subscriberClass.objectInstance ?: subscriberClass.companionObjectInstance ?: continue
 
+                MinecraftForge.EVENT_BUS.unregister(subscriberClass)
                 MinecraftForge.EVENT_BUS.register(subscriberInstance)
                 LOGGER.debug("Registered @EventBusSubscriber object {}", subscriber.className)
             } catch (e: Throwable) {
