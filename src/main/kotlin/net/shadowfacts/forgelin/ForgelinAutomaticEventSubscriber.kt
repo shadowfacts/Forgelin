@@ -52,7 +52,6 @@ object ForgelinAutomaticEventSubscriber {
                 LOGGER.debug("Registered @EventBusSubscriber object {}", subscriber.className)
             } catch (e: Throwable) {
                 LOGGER.error("An error occurred trying to load an @EventBusSubscriber object {} for modid {}", mod.modId, e)
-                throw LoaderException(e)
             }
         }
     }
