@@ -8,8 +8,10 @@ import net.minecraftforge.fml.common.ModContainer
 import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData
 import net.minecraftforge.fml.common.discovery.asm.ModAnnotation.EnumHolder
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.relauncher.Side
 import org.apache.logging.log4j.LogManager
+import java.lang.reflect.Modifier
 import java.util.EnumSet
 import kotlin.reflect.full.companionObjectInstance
 
@@ -45,14 +47,32 @@ object ForgelinAutomaticEventSubscriber {
 
                 val subscriberClass = Class.forName(subscriber.className, false, loader) ?: continue
                 val kotlinClass = subscriberClass.kotlin
-                val subscriberInstance = kotlinClass.objectInstance ?: kotlinClass.companionObjectInstance ?: continue
+                val objectInstance = kotlinClass.objectInstance ?: kotlinClass.companionObjectInstance ?: continue
 
-                MinecraftForge.EVENT_BUS.unregister(subscriberClass)
-                MinecraftForge.EVENT_BUS.register(subscriberInstance)
-                LOGGER.debug("Registered @EventBusSubscriber object {}", subscriber.className)
+                if (!hasStaticEventHandlers(subscriberClass)) {
+                    MinecraftForge.EVENT_BUS.unregister(subscriberClass)
+                    LOGGER.debug("Unregistered static @EventBusSubscriber class {}", subscriber.className)
+                }
+                if (hasObjectEventHandlers(objectInstance)) {
+                    MinecraftForge.EVENT_BUS.register(objectInstance)
+                    LOGGER.debug("Registered @EventBusSubscriber object instance {}", subscriber.className)
+                }
             } catch (e: Throwable) {
                 LOGGER.error("An error occurred trying to load an @EventBusSubscriber object {} for modid {}", mod.modId, e)
+                throw LoaderException(e)
             }
+        }
+    }
+
+    private fun hasObjectEventHandlers(objectInstance: Any): Boolean {
+        return objectInstance.javaClass.methods.any {
+            !Modifier.isStatic(it.modifiers) && it.isAnnotationPresent(SubscribeEvent::class.java)
+        }
+    }
+
+    private fun hasStaticEventHandlers(clazz: Class<*>): Boolean {
+        return clazz.methods.any {
+            Modifier.isStatic(it.modifiers) && it.isAnnotationPresent(SubscribeEvent::class.java)
         }
     }
 
