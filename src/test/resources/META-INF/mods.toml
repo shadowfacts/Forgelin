@@ -1,0 +1,32 @@
+modLoader="kotlinfml"
+loaderVersion="[24,)"
+issueTrackerURL="https://github.com/shadowfacts/Forgelin/issues"
+displayURL="https://github.com/shadowfacts/Forgelin"
+logoFile="examplemod.png"
+credits="Emberwalker, for the original Forgelin"
+authors="shadowfacts"
+
+[[mods]]
+    modId="forgelin_test"
+    version="${file.jarVersion}"
+    displayName="Shadowfacts' Forgelin Test"
+
+[[dependencies.forgelin_test]]
+    modId="forge"
+    mandatory=true
+    versionRange="[24,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.forgelin_test]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.13]"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.forgelin_test]]
+    modId="forgelin"
+    mandatory=true
+    ordering="AFTER"
+    side="BOTH"

@@ -1,7 +1,7 @@
 package net.shadowfacts.forgelin
 
 import net.minecraftforge.common.MinecraftForge
-import net.minecraftforge.fml.common.Loader
+/*import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.fml.common.LoaderException
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.ModContainer
@@ -9,14 +9,14 @@ import net.minecraftforge.fml.common.discovery.ASMDataTable
 import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData
 import net.minecraftforge.fml.common.discovery.asm.ModAnnotation.EnumHolder
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
-import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.Side*/
 import org.apache.logging.log4j.LogManager
 import java.lang.reflect.Modifier
 import java.util.EnumSet
 import kotlin.reflect.full.companionObjectInstance
 
 object ForgelinAutomaticEventSubscriber {
-	private val DEFAULT_SUBSCRIPTION_SIDES = EnumSet.allOf(Side::class.java)
+	/*private val DEFAULT_SUBSCRIPTION_SIDES = EnumSet.allOf(Side::class.java)
 	private val LOGGER = LogManager.getLogger(ForgelinAutomaticEventSubscriber::class.java)
 
 	private val unregistered = mutableSetOf<Class<*>>()
@@ -34,8 +34,8 @@ object ForgelinAutomaticEventSubscriber {
 
 		for (containedMod in containedMods) {
 			val containedModId = containedMod.annotationInfo["modid"] as String
-			if (containedMod.annotationInfo["modLanguageAdapter"] != KotlinAdapter::class.qualifiedName) {
-				LOGGER.debug("Skipping @EventBusSubscriber injection for {} since it does not use KotlinAdapter", containedModId)
+			if (containedMod.annotationInfo["modLanguageAdapter"] != FMLKotlinModLanguageProvider::class.qualifiedName) {
+				LOGGER.debug("Skipping @EventBusSubscriber injection for {} since it does not use FMLKotlinModLanguageProvider", containedModId)
 				continue
 			}
 
@@ -108,5 +108,5 @@ object ForgelinAutomaticEventSubscriber {
 			return targetSides
 		}
 		return DEFAULT_SUBSCRIPTION_SIDES
-	}
+	}*/
 }
