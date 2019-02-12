@@ -1,13 +1,13 @@
 buildscript {
-	repositories {
-		jcenter()
-		mavenCentral()
-		maven { url 'https://files.minecraftforge.net/maven' }
-	}
-	dependencies {
-		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-	}
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url 'https://files.minecraftforge.net/maven' }
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
 }
 
 plugins {
@@ -27,75 +27,75 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 compileKotlin.kotlinOptions.jvmTarget = compileTestKotlin.kotlinOptions.jvmTarget = '1.8'
 
 minecraft {
-	mappings channel: mappings_channel, version: mappings_version
+    mappings channel: mappings_channel, version: mappings_version
 
-	runs {
-		client = {
-			// recommended logging data for a userdev environment
-			properties 'forge.logging.markers': 'CORE,SCAN,REGISTRIES,REGISTRYDUMP'
-			// recommended logging level for the console
-			properties 'forge.logging.console.level': 'debug'
+    runs {
+        client = {
+            // recommended logging data for a userdev environment
+            properties 'forge.logging.markers': 'CORE,SCAN,REGISTRIES,REGISTRYDUMP'
+            // recommended logging level for the console
+            properties 'forge.logging.console.level': 'debug'
             // enable console colors
             properties 'forge.logging.noansi': 'false'
-			workingDirectory project.file('run').canonicalPath
-			source sourceSets.main
-		}
+            workingDirectory project.file('run').canonicalPath
+            source sourceSets.main
+        }
 
-		// todo https://github.com/MinecraftForge/ForgeGradle/pull/546
-		/*testClient = {
-			workingDirectory project.file('run').canonicalPath
+        // todo https://github.com/MinecraftForge/ForgeGradle/pull/546
+        /*testClient = {
+            workingDirectory project.file('run').canonicalPath
 
-			source sourceSets.main
-			source sourceSets.test
+            source sourceSets.main
+            source sourceSets.test
 
-			merge 'client'
-		}*/
+            merge 'client'
+        }*/
 
-		server = {
-			// recommended logging data for a userdev environment
-			properties 'forge.logging.markers': 'CORE,SCAN,REGISTRIES,REGISTRYDUMP'
-			// recommended logging level for the console
-			properties 'forge.logging.console.level': 'debug'
+        server = {
+            // recommended logging data for a userdev environment
+            properties 'forge.logging.markers': 'CORE,SCAN,REGISTRIES,REGISTRYDUMP'
+            // recommended logging level for the console
+            properties 'forge.logging.console.level': 'debug'
             // enable console colors
             properties 'forge.logging.noansi': 'false'
-			workingDirectory project.file('run').canonicalPath
-			source sourceSets.main
-		}
-	}
+            workingDirectory project.file('run').canonicalPath
+            source sourceSets.main
+        }
+    }
 }
 
 repositories {
-	jcenter()
+    jcenter()
 }
 
 dependencies {
-	minecraft forge_version
+    minecraft forge_version
 
-	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-	compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-	compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-	compile "org.jetbrains:annotations:$annotations_version"
-	compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
-	compile "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile "org.jetbrains:annotations:$annotations_version"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version"
 }
 
 shadowJar {
-	classifier = ""
+    classifier = ""
 
-	dependencies {
-		include(dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"))
-		include(dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"))
-		include(dependency("org.jetbrains:annotations:${annotations_version}"))
-		include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}"))
-		include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}"))
-	}
+    dependencies {
+        include(dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"))
+        include(dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"))
+        include(dependency("org.jetbrains:annotations:${annotations_version}"))
+        include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}"))
+        include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}"))
+    }
 }
 
 
 tasks.build.dependsOn shadowJar
 
 artifacts {
-	archives shadowJar
+    archives shadowJar
 }
 
 /*reobf {
