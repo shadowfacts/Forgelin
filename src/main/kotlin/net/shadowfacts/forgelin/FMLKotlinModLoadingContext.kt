@@ -7,25 +7,28 @@ import net.minecraftforge.fml.config.ModConfig
 import java.util.function.Supplier
 
 object FMLKotlinModLoadingContext {
-    private val context = ThreadLocal.withInitial { FMLKotlinModLoadingContext }
-    var activeContainer: FMLKotlinModContainer? = null
+    private val context = ThreadLocal.withInitial { Context() }
 
-    val modEventBus: IEventBus
-        get() = activeContainer!!.eventBus
-
-    fun get(): FMLKotlinModLoadingContext {
+    fun get(): Context {
         return context.get()
     }
 
-    fun <T> registerExtensionPoint(point: ExtensionPoint<T>, extension: Supplier<T>) {
-        activeContainer!!.registerExtensionPoint(point, extension)
-    }
+    class Context {
+        var activeContainer: FMLKotlinModContainer? = null
 
-    fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec) {
-        activeContainer!!.addConfig(ModConfig(type, spec, activeContainer!!))
-    }
+        val modEventBus: IEventBus
+            get() = activeContainer!!.eventBus
 
-    fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec, fileName: String) {
-        activeContainer!!.addConfig(ModConfig(type, spec, activeContainer, fileName))
+        fun <T> registerExtensionPoint(point: ExtensionPoint<T>, extension: Supplier<T>) {
+            activeContainer!!.registerExtensionPoint(point, extension)
+        }
+
+        fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec) {
+            activeContainer!!.addConfig(ModConfig(type, spec, activeContainer!!))
+        }
+
+        fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec, fileName: String) {
+            activeContainer!!.addConfig(ModConfig(type, spec, activeContainer, fileName))
+        }
     }
 }
