@@ -5,10 +5,9 @@ import net.minecraftforge.forgespi.language.IModInfo
 import net.minecraftforge.forgespi.language.IModLanguageProvider
 import net.minecraftforge.forgespi.language.ModFileScanData
 import org.apache.logging.log4j.LogManager
-import java.lang.reflect.InvocationTargetException
 
 class FMLKotlinModTarget(private val className: String, val modId: String) : IModLanguageProvider.IModLanguageLoader {
-    private val log = LogManager.getLogger()
+    private val logger = LogManager.getLogger()
 
     override fun <T> loadMod(info: IModInfo, modClassLoader: ClassLoader, modFileScanResults: ModFileScanData): T {
         // This language class is loaded in the system level classloader - before the game even starts
@@ -16,11 +15,11 @@ class FMLKotlinModTarget(private val className: String, val modId: String) : IMo
         // in the classloader of the game - the context classloader is appropriate here.
         try {
             val fmlContainer = Class.forName("net.shadowfacts.forgelin.FMLKotlinModContainer", true, Thread.currentThread().contextClassLoader)
-            log.debug(LOADING, "Loading FMLKotlinModContainer from classloader {} - got {}", Thread.currentThread().contextClassLoader, fmlContainer.classLoader)
+            logger.debug(LOADING, "Loading FMLKotlinModContainer from classloader {} - got {}", Thread.currentThread().contextClassLoader, fmlContainer.classLoader)
             val constructor = fmlContainer.getConstructor(IModInfo::class.java, String::class.java, ClassLoader::class.java, ModFileScanData::class.java)
             return constructor.newInstance(info, className, modClassLoader, modFileScanResults) as T
         } catch (e: ReflectiveOperationException) {
-            log.fatal(LOADING, "Unable to load FMLKotlinModContainer, wut?", e)
+            logger.fatal(LOADING, "Unable to load FMLKotlinModContainer, wut?", e)
             throw e
         }
     }
