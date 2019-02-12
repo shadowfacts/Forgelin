@@ -97,8 +97,7 @@ class FMLKotlinModContainer(
         }
 
         log.debug(LOADING, "Injecting Automatic event subscribers for {}", getModId())
-        AutomaticEventSubscriber.inject(this, this.scanResults, this.modClass.classLoader)
-        //ForgelinAutomaticEventSubscriber.subscribeAutomatic(FMLKotlinModLoadingContext.get().activeContainer, event.asmData, FMLCommonHandler.instance().side)
+        ForgelinAutomaticEventSubscriber.inject(this, this.scanResults, this.modClass.classLoader)
         log.debug(LOADING, "Completed Automatic event subscribers for {}", getModId())
     }
 

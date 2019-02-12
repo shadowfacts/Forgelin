@@ -20,6 +20,15 @@ object ForgelinTest {
 		FMLKotlinModLoadingContext.get().modEventBus.register(this)
 	}
 
+	// You can also use EventBusSubscriber as usual
+	@Mod.EventBusSubscriber
+	object EventSubscriber {
+		@SubscribeEvent
+		fun testNonStatic(event: EntityJoinWorldEvent) {
+			logger.info("HELLO from testNonStatic")
+		}
+	}
+
 	fun setup(event: FMLCommonSetupEvent) {
 		logger.info("HELLO from setup")
 	}
@@ -31,20 +40,5 @@ object ForgelinTest {
 	@SubscribeEvent
 	fun setup3(event: FMLCommonSetupEvent) {
 		logger.info("HELLO from setup3")
-	}
-
-	@Mod.EventBusSubscriber
-	object EventSubscriber {
-		// doesn't work
-		@SubscribeEvent
-		fun testNonStatic(event: EntityJoinWorldEvent) {
-			logger.info("HELLO from testNonStatic")
-		}
-
-		@JvmStatic
-		@SubscribeEvent
-		fun testStatic(event: EntityJoinWorldEvent) {
-			logger.info("HELLO from testStatic")
-		}
 	}
 }
