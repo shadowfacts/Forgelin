@@ -1,53 +1,66 @@
 buildscript {
 	repositories {
 		jcenter()
-		maven {
-			name "forge"
-			url "http://files.minecraftforge.net/maven/"
-		}
+		mavenCentral()
+		maven { url 'https://files.minecraftforge.net/maven' }
 	}
 	dependencies {
-		classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
-		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
+		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 	}
 }
 
 plugins {
-	id "maven"
-	id "com.github.johnrengelman.shadow" version "1.2.3"
+    id "maven"
+    id "com.github.johnrengelman.shadow" version "4.0.4"
 }
 
-apply plugin: "kotlin"
-apply plugin: "net.minecraftforge.gradle.forge"
-apply from: "https://github.com/shadowfacts/maven/raw/master/maven.gradle"
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'kotlin'
+apply plugin: 'eclipse'
+
+apply from: 'https://github.com/shadowfacts/maven/raw/master/maven.gradle'
 
 version = mod_version
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+compileKotlin.kotlinOptions.jvmTarget = compileTestKotlin.kotlinOptions.jvmTarget = '1.8'
 
 minecraft {
-	version = mc_version + "-" + forge_version
-	runDir = "run"
+	mappings channel: mappings_channel, version: mappings_version
 
-	mappings = mcp_mappings
+	runs {
+		client = {
+			// recommended logging data for a userdev environment
+			properties 'forge.logging.markers': 'CORE,SCAN,REGISTRIES,REGISTRYDUMP'
+			// recommended logging level for the console
+			properties 'forge.logging.console.level': 'debug'
+            // enable console colors
+            properties 'forge.logging.noansi': 'false'
+			workingDirectory project.file('run').canonicalPath
+			source sourceSets.main
+		}
 
-	replaceIn "Forgelin.kt"
-	replace "@VERSION@", mod_version
+		// todo https://github.com/MinecraftForge/ForgeGradle/pull/546
+		/*testClient = {
+			workingDirectory project.file('run').canonicalPath
 
-	useDepAts = true
-}
+			source sourceSets.main
+			source sourceSets.test
 
-processResources {
-	inputs.property "version", project.version
-	inputs.property "mcversion", project.minecraft.version
+			merge 'client'
+		}*/
 
-	from (sourceSets.main.resources.srcDirs) {
-		include "mcmod.info"
-		expand "version": project.version, "mcversion": mc_version
-	}
-	from (sourceSets.main.resources.srcDirs) {
-		exclude "mcmod.info"
+		server = {
+			// recommended logging data for a userdev environment
+			properties 'forge.logging.markers': 'CORE,SCAN,REGISTRIES,REGISTRYDUMP'
+			// recommended logging level for the console
+			properties 'forge.logging.console.level': 'debug'
+            // enable console colors
+            properties 'forge.logging.noansi': 'false'
+			workingDirectory project.file('run').canonicalPath
+			source sourceSets.main
+		}
 	}
 }
 
@@ -56,23 +69,19 @@ repositories {
 }
 
 dependencies {
-	compile group: "org.jetbrains.kotlin", name: "kotlin-stdlib", version: kotlin_version
-	compile group: "org.jetbrains.kotlin", name: "kotlin-stdlib-jdk8", version: kotlin_version
-	compile group: "org.jetbrains.kotlin", name: "kotlin-reflect", version: kotlin_version
-	compile group: "org.jetbrains", name: "annotations", version: annotations_version
-	compile group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: coroutines_version
-	compile group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: coroutines_version
-}
+	minecraft forge_version
 
-jar {
-	manifest {
-		attributes "FMLCorePlugin": "net.shadowfacts.forgelin.preloader.ForgelinPlugin",
-					"FMLCorePluginContainsFMLMod": "true"
-	}
+	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+	compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+	compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+	compile "org.jetbrains:annotations:$annotations_version"
+	compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+	compile "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version"
 }
 
 shadowJar {
 	classifier = ""
+
 	dependencies {
 		include(dependency("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"))
 		include(dependency("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"))
@@ -80,11 +89,8 @@ shadowJar {
 		include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutines_version}"))
 		include(dependency("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:${coroutines_version}"))
 	}
-	manifest {
-		attributes "FMLCorePlugin": "net.shadowfacts.forgelin.preloader.ForgelinPlugin",
-					"FMLCorePluginContainsFMLMod": "true"
-	}
 }
+
 
 tasks.build.dependsOn shadowJar
 
@@ -92,12 +98,14 @@ artifacts {
 	archives shadowJar
 }
 
-reobf {
+/*reobf {
 	shadowJar {
 		mappingType = "SEARGE"
 	}
-}
-tasks.reobfShadowJar.mustRunAfter shadowJar
-tasks.build.dependsOn reobfShadowJar
+}*/
+
+//tasks.reobfShadowJar.mustRunAfter shadowJar
+//tasks.build.dependsOn reobfShadowJar
+
 
 
