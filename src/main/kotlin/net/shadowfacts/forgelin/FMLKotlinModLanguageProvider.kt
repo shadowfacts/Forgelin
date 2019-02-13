@@ -13,6 +13,10 @@ import java.util.stream.Collectors
 class FMLKotlinModLanguageProvider : IModLanguageProvider {
 	private val logger = LogManager.getLogger()
 
+	init {
+		logger.debug("Init FMLKotlinModLanguageProvider")
+	}
+
 	override fun name(): String  = "kotlinfml"
 
 	override fun getFileVisitor(): Consumer<ModFileScanData> {

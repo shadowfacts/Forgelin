@@ -1,52 +1,28 @@
-# This is an example mods.toml file. It contains the data relating to the loading mods.
-# There are several mandatory fields (#mandatory), and many more that are optional (#optional).
-# The overall format is standard TOML format, v0.5.0.
-# Note that there are a couple of TOML lists in this file.
-# Find more information on toml format here:  https://github.com/toml-lang/toml
-# The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
-modLoader="kotlinfml" #mandatory
-# A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion="[24,)" #mandatory (24 is current forge version)
-# A URL to refer people to when problems occur with this mod
-issueTrackerURL="https://github.com/shadowfacts/Forgelin/issues" #optional
-# A URL for the "homepage" for this mod, displayed in the mod UI
-displayURL="https://github.com/shadowfacts/Forgelin" #optional
-# A file name (in the root of the mod JAR) containing a logo for display
-logoFile="examplemod.png" #optional
-# A text field displayed in the mod UI
-credits="Emberwalker, for the original Forgelin" #optional
-# A text field displayed in the mod UI
+modLoader="kotlinfml"
+loaderVersion="[2,)"
+issueTrackerURL="https://github.com/shadowfacts/Forgelin/issues"
+displayURL="https://github.com/shadowfacts/Forgelin"
+logoFile="examplemod.png"
+credits="Emberwalker, for the original Forgelin"
 authors="shadowfacts" #optional
-# A list of mods - how many allowed here is determined by the individual mod loader
-[[mods]] #mandatory
-# The modid of the mod
-modId="forgelin" #mandatory
-# The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
-version="${file.jarVersion}" #mandatory
- # A display name for the mod
-displayName="Shadowfacts' Forgelin" #mandatory
-# A URL to query for updates for this mod. See the JSON update specification <here>
-#updateJSONURL="" #optional
-# The description text for the mod (multi line!) (#mandatory)
-description='''
-Kotlin provider for Forge.
-'''
-# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.forgelin]] #optional
-    # the modid of the dependency
-    modId="forge" #mandatory
-    # Does this dependency have to exist - if not, ordering below must be specified
-    mandatory=true #mandatory
-    # The version range of the dependency
-    versionRange="[24,)" #mandatory
-    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+
+[[mods]]
+    modId="forgelin"
+    version="2.0.0"
+    displayName="Shadowfacts' Forgelin"
+    #updateJSONURL="" #optional
+    description="Kotlin provider for Forge."
+
+[[dependencies.forgelin]]
+    modId="forge"
+    mandatory=true
+    versionRange="[24,)"
     ordering="NONE"
-    # Side this dependency is applied on - BOTH, CLIENT or SERVER
     side="BOTH"
-# Here's another dependency
+
 [[dependencies.forgelin]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.13]"
+    versionRange="[1.13,)"
     ordering="NONE"
     side="BOTH"
