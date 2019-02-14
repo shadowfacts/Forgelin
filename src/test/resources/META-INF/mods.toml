@@ -24,9 +24,3 @@ authors="shadowfacts"
     versionRange="[1.13]"
     ordering="NONE"
     side="BOTH"
-
-[[dependencies.forgelin_test]]
-    modId="forgelin"
-    mandatory=true
-    ordering="AFTER"
-    side="BOTH"
