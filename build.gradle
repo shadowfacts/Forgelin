@@ -66,6 +66,10 @@ minecraft {
 
 jar {
     manifest {
+        attributes([
+                'FMLModType': 'LANGPROVIDER'
+        ])
+        
         attributes(["Specification-Title": "Mod Language Provider",
                     "Specification-Vendor": "Forge Development LLC",
                     "Specification-Version": "1",

@@ -1,7 +1,0 @@
-{
-    "pack": {
-        "description": "Forgelin resources",
-        "pack_format": 4,
-        "_comment": "Without this file, Forge crashes on startup."
-    }
-}
