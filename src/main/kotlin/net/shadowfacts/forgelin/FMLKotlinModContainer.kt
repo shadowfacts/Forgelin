@@ -4,14 +4,17 @@ import net.minecraftforge.eventbus.EventBusErrorMessage
 import net.minecraftforge.eventbus.api.Event
 import net.minecraftforge.eventbus.api.IEventBus
 import net.minecraftforge.eventbus.api.IEventListener
-import net.minecraftforge.fml.*
+import net.minecraftforge.fml.LifecycleEventProvider
 import net.minecraftforge.fml.Logging.LOADING
-import net.minecraftforge.fml.config.ModConfig
+import net.minecraftforge.fml.ModContainer
+import net.minecraftforge.fml.ModLoadingException
+import net.minecraftforge.fml.ModLoadingStage
 import net.minecraftforge.forgespi.language.IModInfo
 import net.minecraftforge.forgespi.language.ModFileScanData
 import org.apache.logging.log4j.LogManager
 import java.util.*
 import java.util.function.Consumer
+import java.util.function.Supplier
 
 class FMLKotlinModContainer(
         info: IModInfo,
@@ -36,7 +39,10 @@ class FMLKotlinModContainer(
         triggerMap[ModLoadingStage.PROCESS_IMC] = dummy().andThen(::beforeEvent).andThen(::fireEvent).andThen(::afterEvent)
         triggerMap[ModLoadingStage.COMPLETE] = dummy().andThen(::beforeEvent).andThen(::fireEvent).andThen(::afterEvent)
         eventBus = IEventBus.create(::onEventFailed)
-        configHandler = Optional.of<Consumer<ModConfig.ModConfigEvent>>(Consumer { event -> eventBus.post(event) })
+        configHandler = Optional.of(Consumer { event -> eventBus.post(event) })
+
+        val contextExtension = FMLKotlinModLoadingContext.Context(this)
+        this.contextExtension = Supplier { contextExtension }
 
         try {
             // Here, we won't init the class, meaning static {} blocks (init {} in kotlin) won't get triggered
@@ -70,10 +76,7 @@ class FMLKotlinModContainer(
 
     private fun dummy(): Consumer<LifecycleEventProvider.LifecycleEvent> = Consumer {}
 
-    private fun beforeEvent(lifecycleEvent: LifecycleEventProvider.LifecycleEvent) {
-        FMLKotlinModLoadingContext.get().activeContainer = this
-        ModThreadContext.get().activeContainer = this
-    }
+    private fun beforeEvent(lifecycleEvent: LifecycleEventProvider.LifecycleEvent) {}
 
     private fun fireEvent(lifecycleEvent: LifecycleEventProvider.LifecycleEvent) {
         val event = lifecycleEvent.getOrBuildEvent(this)
@@ -89,8 +92,6 @@ class FMLKotlinModContainer(
     }
 
     private fun afterEvent(lifecycleEvent: LifecycleEventProvider.LifecycleEvent) {
-        ModThreadContext.get().activeContainer = null
-        FMLKotlinModLoadingContext.get().activeContainer = null
         if (currentState == ModLoadingStage.ERROR) {
             logger.error(LOADING, "An error occurred while dispatching event {} to {}", lifecycleEvent.fromStage(), getModId())
         }

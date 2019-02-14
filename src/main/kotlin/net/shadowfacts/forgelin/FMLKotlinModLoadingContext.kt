@@ -1,34 +1,15 @@
 package net.shadowfacts.forgelin
 
-import net.minecraftforge.common.ForgeConfigSpec
 import net.minecraftforge.eventbus.api.IEventBus
-import net.minecraftforge.fml.ExtensionPoint
-import net.minecraftforge.fml.config.ModConfig
-import java.util.function.Supplier
+import net.minecraftforge.fml.ModLoadingContext
 
 object FMLKotlinModLoadingContext {
-    private val context = ThreadLocal.withInitial { Context() }
-
     fun get(): Context {
-        return context.get()
+        return ModLoadingContext.get().extension()
     }
 
-    class Context {
-        var activeContainer: FMLKotlinModContainer? = null
-
+    class Context(private val container: FMLKotlinModContainer) {
         val modEventBus: IEventBus
-            get() = activeContainer!!.eventBus
-
-        fun <T> registerExtensionPoint(point: ExtensionPoint<T>, extension: Supplier<T>) {
-            activeContainer!!.registerExtensionPoint(point, extension)
-        }
-
-        fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec) {
-            activeContainer!!.addConfig(ModConfig(type, spec, activeContainer!!))
-        }
-
-        fun registerConfig(type: ModConfig.Type, spec: ForgeConfigSpec, fileName: String) {
-            activeContainer!!.addConfig(ModConfig(type, spec, activeContainer, fileName))
-        }
+            get() = container.eventBus
     }
 }
