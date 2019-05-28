@@ -5,6 +5,7 @@ buildscript {
 			name "forge"
 			url "http://files.minecraftforge.net/maven/"
 		}
+		maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
 	}
 	dependencies {
 		classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
@@ -53,6 +54,7 @@ processResources {
 
 repositories {
 	jcenter()
+	maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
 }
 
 dependencies {

@@ -2,7 +2,7 @@
 Fork of [Emberwalker's Forgelin](https://github.com/Emberwalker/Forgelin).
 
 ## Additions
-- Shades the Kotlin standard library, runtime, and reflect libraries so you don't have to.
+- Shades the Kotlin standard library, runtime, coroutines-core, and reflect libraries so you don't have to.
 - Provides a Forge `ILanguageAdapter` for using Kotlin `object` classes as your main mod class.
 
 ## Usage
