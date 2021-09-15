@@ -95,8 +95,7 @@ tasks {
                 "modid" to modName.toLowerCase(),
                 "modname" to modName,
                 "link" to repositoryLink,
-                "description" to modDescription,
-                "authorList" to arrayOf("shadowfacts", "Licious" )
+                "description" to modDescription
             )
         }
     }

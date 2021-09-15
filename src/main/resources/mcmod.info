@@ -8,7 +8,7 @@
 	  "credits": "Emberwalker, for the original Forgelin",
 	  "url": "$link",
 	  "updateUrl": "",
-	  "authorList": "$authorList",
+	  "authorList": ["shadowfacts", "Licious"],
 	  "screenshots": []
 	}
 ]
