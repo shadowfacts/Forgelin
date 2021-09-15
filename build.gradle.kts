@@ -56,6 +56,7 @@ val minecraft by configurations
 dependencies {
     minecraft("net.minecraftforge:forge:$forgeVersion")
     shadow("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    shadow("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
     shadow("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     shadow("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     shadow("org.jetbrains:annotations:$annotationsVersion")
@@ -100,6 +101,11 @@ tasks {
         }
     }
 
-
+    jar {
+        manifest.attributes(
+            "FMLCorePluginContainsFMLMod" to "true",
+            "FMLCorePlugin" to "net.shadowfacts.forgelin.preloader.ForgelinPlugin"
+        )
+    }
 
 }
