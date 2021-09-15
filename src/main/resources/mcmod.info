@@ -1,14 +1,14 @@
 [
 	{
-	  "modid": "forgelin",
-	  "name": "Shadowfacts' Forgelin",
+	  "modid": "$modid",
+	  "name": "$modname",
 	  "version": "$version",
 	  "mcversion": "$mcversion",
-	  "description": "Kotlin helper library for Forge.",
+	  "description": "$description",
 	  "credits": "Emberwalker, for the original Forgelin",
-	  "url": "https://github.com/shadowfacts/Forgelin",
+	  "url": "$link",
 	  "updateUrl": "",
-	  "authorList": [ "shadowfacts" ],
+	  "authorList": "$authorList",
 	  "screenshots": []
 	}
 ]
